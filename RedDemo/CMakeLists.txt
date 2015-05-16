@@ -115,17 +115,21 @@ include_directories(
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
+  Classes/GameObject.cpp
   Classes/GameScene.cpp
   Classes/MenuScene.cpp
   Classes/PauseMenu.cpp
+  Classes/Platform.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
+  Classes/GameObject.o
   Classes/GameScene.h
   Classes/MenuScene.h
   Classes/PauseMenu.h
+  Classes/Platform.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
