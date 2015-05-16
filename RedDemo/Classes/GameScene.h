@@ -13,9 +13,11 @@ public:
 
 private:
 	cocos2d::Label* label;
+	cocos2d::PhysicsWorld* sceneWorld;
 
 	void update(float deltaTime);
 	void initMenu();
 	void pauseCallback(Ref* pSender);
+	void setPhysicsWorld(cocos2d::PhysicsWorld* world);
 };
 

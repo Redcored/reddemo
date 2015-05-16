@@ -6,8 +6,13 @@ USING_NS_CC;
 Scene* GameScene::createScene()
 {
 	// Setting up the scene
-	auto scene = Scene::create();
+	auto scene = Scene::createWithPhysics();
+
+	// Uncomment this if you want physics bodies to be visible
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
 	auto layer = GameScene::create();
+	layer->setPhysicsWorld(scene->getPhysicsWorld());
 	scene->addChild(layer);
 
 	return scene;
@@ -65,4 +70,8 @@ void GameScene::initMenu() {
 void GameScene::pauseCallback(Ref* pSender) {
 	auto scene = PauseMenu::createScene();
 	Director::getInstance()->pushScene(TransitionFade::create(0.25, scene));
+}
+
+void GameScene::setPhysicsWorld(cocos2d::PhysicsWorld* world) {
+	this->sceneWorld = world;
 }
