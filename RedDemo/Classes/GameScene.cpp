@@ -33,9 +33,7 @@ bool GameScene::init()
 }
 
 void GameScene::update(float deltaTime) {
-	Vec2 movement(1, -1);
-	label->setPosition(label->getPosition() + movement);
-	log("Delta time: %f", deltaTime);
+	// Currently, there is nothing to do
 }
 
 void GameScene::initMenu() {
