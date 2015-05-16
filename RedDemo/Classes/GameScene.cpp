@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "PauseMenu.h"
+#include "Platform.h"
 
 USING_NS_CC;
 
@@ -24,7 +25,9 @@ bool GameScene::init()
 	if (!Layer::init()) { return false; }
 
 	initMenu();
+	
 	this->scheduleUpdate();
+	worldObjects.push_back(new Platform(this));
 
 	return true;
 }

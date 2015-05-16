@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "Platform.h"
 
 class GameScene : public cocos2d::Layer
 {
@@ -13,6 +14,7 @@ public:
 
 private:
 	cocos2d::Label* label;
+	std::vector<GameObject*> worldObjects;
 	cocos2d::PhysicsWorld* sceneWorld;
 
 	void update(float deltaTime);
