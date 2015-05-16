@@ -13,9 +13,9 @@ void Platform::addToLayer(Layer* layer) const {
 
 void Platform::setupGraphics() {
 	this->graphics = DrawNode::create();
-	this->graphics->drawSolidRect(Point(-1920/2, -150), Point(1920/2, 150), Color4F(Color3B::WHITE));
-	this->graphics->setPosition(Point(1920/2, 150));
-	auto body = PhysicsBody::createBox(Size(1920,300), PHYSICSBODY_MATERIAL_DEFAULT);
+	this->graphics->drawSolidRect(Point(-1920/2, -100), Point(1920/2, 100), Color4F(Color3B::WHITE));
+	this->graphics->setPosition(Point(1920/2, 100));
+	auto body = PhysicsBody::createBox(Size(1920,200), PHYSICSBODY_MATERIAL_DEFAULT);
 	body->setDynamic(false);
 	this->graphics->setPhysicsBody(body);
 }
