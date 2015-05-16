@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "PauseMenu.h"
 #include "Platform.h"
+#include "Player.h"
 
 USING_NS_CC;
 
@@ -28,6 +29,7 @@ bool GameScene::init()
 	
 	this->scheduleUpdate();
 	worldObjects.push_back(new Platform(this));
+	worldObjects.push_back(new Player(this));
 
 	return true;
 }

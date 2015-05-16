@@ -120,6 +120,7 @@ set(GAME_SRC
   Classes/MenuScene.cpp
   Classes/PauseMenu.cpp
   Classes/Platform.cpp
+  Classes/Player.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -130,6 +131,7 @@ set(GAME_HEADERS
   Classes/MenuScene.h
   Classes/PauseMenu.h
   Classes/Platform.h
+  Classes/Player.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
