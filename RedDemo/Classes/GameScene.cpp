@@ -11,7 +11,7 @@ Scene* GameScene::createScene()
 	auto scene = Scene::createWithPhysics();
 
 	// Uncomment this if you want physics bodies to be visible
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	auto layer = GameScene::create();
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
@@ -27,10 +27,17 @@ bool GameScene::init()
 
 	initMenu();
 	
-	this->scheduleUpdate();
-	worldObjects.push_back(new Platform(this));
-	worldObjects.push_back(new Player(this));
+	GameObject* plat = new Platform();
+	plat->setPosition(1920 / 2, 100);
 
+	Player* player = new Player();
+	player->setPosition(1920 / 2, 100);
+	//player->startKeyboardListener();
+
+	this->addChild(plat);
+	this->addChild(player);
+
+	this->scheduleUpdate();
 	return true;
 }
 

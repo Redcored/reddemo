@@ -2,18 +2,15 @@
 #include "cocos2d.h"
 #include "GameObject.h"
 
-class Player :
-	public GameObject
+class Player : public GameObject
 {
 public:
-	Player(cocos2d::Layer* layer);
-
-protected:
-	virtual void addToLayer(cocos2d::Layer* layer) const;
+	Player();
 
 private:
 	void setupGraphics();
 	void setupPhysics();
-	void startKeyboardListener(cocos2d::Layer* layer);
-	cocos2d::DrawNode* graphics;
+	void startKeyboardListener();
+	void keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+	void keyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 };

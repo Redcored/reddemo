@@ -2,20 +2,20 @@
 
 USING_NS_CC;
 
-Platform::Platform(Layer* layer) {
+Platform::Platform() {
 	setupGraphics();
-	addToLayer(layer);
-}
-
-void Platform::addToLayer(Layer* layer) const {
-	layer->addChild(this->graphics, 0);
+	setupPhysics();
 }
 
 void Platform::setupGraphics() {
-	this->graphics = DrawNode::create();
-	this->graphics->drawSolidRect(Point(-1920/2, -100), Point(1920/2, 100), Color4F(Color3B::WHITE));
-	this->graphics->setPosition(Point(1920/2, 100));
-	auto body = PhysicsBody::createBox(Size(1920,200), PHYSICSBODY_MATERIAL_DEFAULT);
+	auto node = DrawNode::create();
+	node->drawSolidRect(Point(-1920 / 2, -100), Point(1920 / 2, 100), Color4F(Color3B::WHITE));
+	this->addChild(node);
+	this->graphics = node;
+}
+
+void Platform::setupPhysics() {
+	auto body = PhysicsBody::createBox(Size(1920, 200), PHYSICSBODY_MATERIAL_DEFAULT);
 	body->setDynamic(false);
-	this->graphics->setPhysicsBody(body);
+	this->setPhysicsBody(body);
 }

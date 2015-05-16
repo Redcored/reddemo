@@ -5,56 +5,85 @@ USING_NS_CC;
 namespace {
 	const float BALL_RADIUS = 100.0f;
 	const float BALL_ANGLE = 0.0f;
+	const float ACCELERATION = 200;
 	const unsigned int BALL_SEGMENTS = 64;
 };
 
-Player::Player(cocos2d::Layer* layer) {
+Player::Player() {
 	setupGraphics();
 	setupPhysics();
-	addToLayer(layer);
-	startKeyboardListener(layer);
-}
-
-void Player::addToLayer(cocos2d::Layer* layer) const {
-	layer->addChild(this->graphics);
+	startKeyboardListener();
+	this->setPosition(Vec2(1920 / 2, 1080 / 2));
 }
 
 void Player::setupGraphics() {
-	this->graphics = DrawNode::create();
-	this->graphics->drawSolidCircle(Vec2::ZERO, BALL_RADIUS, BALL_ANGLE, BALL_SEGMENTS, Color4F(Color3B::ORANGE));
-	this->graphics->setPosition(1920/2, 1080/2);
+	DrawNode* node = DrawNode::create();
+	node->drawCircle(Vec2::ZERO, BALL_RADIUS, BALL_ANGLE, BALL_SEGMENTS, true, Color4F(Color3B::ORANGE));
+	this->addChild(node);
+	this->graphics = node;
 }
 
 void Player::setupPhysics() {
-	auto body = PhysicsBody::createCircle(BALL_RADIUS, PHYSICSBODY_MATERIAL_DEFAULT);
-	this->graphics->setPhysicsBody(body);
+	auto body = PhysicsBody::createCircle(BALL_RADIUS, PhysicsMaterial(1, 1, 1));
+	body->setMass(1);
+	this->setPhysicsBody(body);
 }
 
-void Player::startKeyboardListener(cocos2d::Layer* layer) {
+void Player::keyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
+	PhysicsBody* body = event->getCurrentTarget()->getPhysicsBody();
+
+	switch (keyCode){
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+	case EventKeyboard::KeyCode::KEY_A:
+		body->applyForce(Vec2(-ACCELERATION, 0));
+		break;
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+	case EventKeyboard::KeyCode::KEY_D:
+		body->applyForce(Vec2(ACCELERATION, 0));
+		break;
+	case EventKeyboard::KeyCode::KEY_UP_ARROW:
+	case EventKeyboard::KeyCode::KEY_W:
+		body->applyForce(Vec2(0, ACCELERATION));
+		break;
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+	case EventKeyboard::KeyCode::KEY_S:
+		body->applyForce(Vec2(0, -ACCELERATION));
+		break;
+	}
+}
+
+void Player::keyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
+	PhysicsBody* body = event->getCurrentTarget()->getPhysicsBody();
+
+	//body->setVelocity(body->getVelocity() + Vec2(-300, 0));
+	//body->applyImpulse(Vect(-300, 0));
+	//body->applyTorque(1000);
+
+	switch (keyCode){
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+	case EventKeyboard::KeyCode::KEY_A:
+		body->applyForce(Vec2(ACCELERATION, 0));
+		break;
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+	case EventKeyboard::KeyCode::KEY_D:
+		body->applyForce(Vec2(-ACCELERATION, 0));
+		break;
+	case EventKeyboard::KeyCode::KEY_UP_ARROW:
+	case EventKeyboard::KeyCode::KEY_W:
+		body->applyForce(Vec2(0, -ACCELERATION));
+		break;
+	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+	case EventKeyboard::KeyCode::KEY_S:
+		body->applyForce(Vec2(0, ACCELERATION));
+		break;
+	}
+}
+
+void Player::startKeyboardListener() {
+
 	auto eventListener = EventListenerKeyboard::create();
+	eventListener->onKeyPressed = CC_CALLBACK_2(Player::keyPressed, this);
+	eventListener->onKeyReleased = CC_CALLBACK_2(Player::keyReleased, this);
 
-    eventListener->onKeyPressed = [](EventKeyboard::KeyCode keyCode, Event* event){
-		PhysicsBody* body = event->getCurrentTarget()->getPhysicsBody();
-
-		switch(keyCode){
-			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-			case EventKeyboard::KeyCode::KEY_A:
-				body->setVelocity(body->getVelocity() + Vec2(-300, 0));
-				break;
-			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-			case EventKeyboard::KeyCode::KEY_D:
-				body->setVelocity(body->getVelocity() + Vec2(300, 0));
-				break;
-			case EventKeyboard::KeyCode::KEY_UP_ARROW:
-			case EventKeyboard::KeyCode::KEY_W:
-				body->setVelocity(body->getVelocity() + Vec2(0, 300));
-				break;
-			case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-			case EventKeyboard::KeyCode::KEY_S:
-				body->setVelocity(body->getVelocity() + Vec2(0, -300));
-				break;
-		}
-    };
-
-	layer->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this->graphics);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this);
 }

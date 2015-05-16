@@ -14,7 +14,6 @@ public:
 
 private:
 	cocos2d::Label* label;
-	std::vector<GameObject*> worldObjects;
 	cocos2d::PhysicsWorld* sceneWorld;
 
 	void update(float deltaTime);

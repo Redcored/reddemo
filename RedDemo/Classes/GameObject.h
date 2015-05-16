@@ -2,7 +2,9 @@
 
 #include "cocos2d.h"
 
-class GameObject {
+class GameObject : public cocos2d::Node {
+
 protected:
-	virtual void addToLayer(cocos2d::Layer* layer) const = 0;
+	cocos2d::Node* graphics;
+
 };
