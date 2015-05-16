@@ -1,5 +1,4 @@
-#ifndef __MENU_SCENE_H__
-#define __MENU_SCENE_H__
+#pragma once
 
 #include "cocos2d.h"
 
@@ -14,9 +13,14 @@ public:
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
+
+	// Starts the game by entering the game scene
+	void startGameCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
     CREATE_FUNC(MenuScene);
-};
 
-#endif // __MENU_SCENE_H__
+private:
+
+	void initMenu();
+};
