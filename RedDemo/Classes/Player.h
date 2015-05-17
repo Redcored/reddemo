@@ -5,11 +5,12 @@
 class Player : public GameObject
 {
 public:
-	Player();
+	Player(GameScene* scene);
 
 private:
 	void setupGraphics();
 	void setupPhysics();
+
 	void startKeyboardListener();
 	void keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void keyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);

@@ -4,7 +4,7 @@
 class Platform : public GameObject {
 
 public:
-	Platform();
+	Platform(GameScene* scene);
 
 private:
 	void setupGraphics();

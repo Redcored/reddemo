@@ -10,11 +10,7 @@ Scene* GameScene::createScene()
 	// Setting up the scene
 	auto scene = Scene::createWithPhysics();
 
-	// Uncomment this if you want physics bodies to be visible
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-
 	auto layer = GameScene::create();
-	layer->setPhysicsWorld(scene->getPhysicsWorld());
 	scene->addChild(layer);
 
 	return scene;
@@ -26,23 +22,33 @@ bool GameScene::init()
 	if (!Layer::init()) { return false; }
 
 	initMenu();
+	setupPhysics();
 	
-	GameObject* plat = new Platform();
-	plat->setPosition(1920 / 2, 100);
+	GameObject* plat = new Platform(this);
+	//plat->setPosition(1920 / 2, 100);
 
-	Player* player = new Player();
-	player->setPosition(1920 / 2, 100);
-	//player->startKeyboardListener();
+	Player* player = new Player(this);
+	//player->setPosition(1920 / 2, 400);
 
-	this->addChild(plat);
-	this->addChild(player);
+	//this->runAction(Follow::create(player));
 
 	this->scheduleUpdate();
 	return true;
 }
 
+b2World* GameScene::getPhysics() {
+	return this->physicsWorld;
+}
+
 void GameScene::update(float deltaTime) {
+
 	// Currently, there is nothing to do
+	this->physicsWorld->Step(deltaTime, 8, 3);
+	for (b2Body* b = this->physicsWorld->GetBodyList();
+		b; b = b->GetNext()) {
+		log("Speed: %f", b->GetLinearVelocity());
+	}
+
 }
 
 void GameScene::initMenu() {
@@ -82,6 +88,7 @@ void GameScene::pauseCallback(Ref* pSender) {
 	Director::getInstance()->pushScene(TransitionFade::create(0.25, scene));
 }
 
-void GameScene::setPhysicsWorld(cocos2d::PhysicsWorld* world) {
-	this->sceneWorld = world;
+void GameScene::setupPhysics() {
+	this->physicsWorld = new b2World(b2Vec2(0, -9.81));
+
 }

@@ -1,31 +1,49 @@
 #include "Player.h"
+#include "GameScene.h"
+#include <Box2D\Box2D.h>
 
 USING_NS_CC;
 
 namespace {
 	const float BALL_RADIUS = 100.0f;
 	const float BALL_ANGLE = 0.0f;
-	const float ACCELERATION = 200;
+	const float ACCELERATION = 20000;
 	const unsigned int BALL_SEGMENTS = 64;
 };
 
-Player::Player() {
+Player::Player(GameScene* scene) : GameObject(scene) {
 	setupGraphics();
 	setupPhysics();
 	startKeyboardListener();
-	this->setPosition(Vec2(1920 / 2, 1080 / 2));
 }
 
 void Player::setupGraphics() {
-	DrawNode* node = DrawNode::create();
-	node->drawCircle(Vec2::ZERO, BALL_RADIUS, BALL_ANGLE, BALL_SEGMENTS, true, Color4F(Color3B::ORANGE));
-	this->addChild(node);
-	this->graphics = node;
+	DrawNode* graphics = DrawNode::create();
+	graphics->drawCircle(Vec2::ZERO, BALL_RADIUS, BALL_ANGLE, BALL_SEGMENTS, true, Color4F(Color3B::ORANGE));
+	this->getGameWorld()->addChild(graphics);
+	this->graphics = graphics;
 }
 
 void Player::setupPhysics() {
-	auto body = PhysicsBody::createCircle(BALL_RADIUS, PhysicsMaterial(1, 1, 1));
-	body->setMass(1);
+	b2Body* body;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(60, 50);
+	bodyDef.userData = this;
+	body = this->getGameWorld()->getPhysics()->CreateBody(&bodyDef);
+
+	b2CircleShape shape;
+	shape.m_radius = 5.0f;
+	shape.m_p.Set(0.0f, 0.0f);
+
+	b2FixtureDef shapeDef;
+	shapeDef.shape = &shape;
+	shapeDef.density = 10.0f;
+	shapeDef.friction = 0.4f;
+	shapeDef.restitution = 1.0f;
+
+	body->CreateFixture(&shapeDef);
 	this->setPhysicsBody(body);
 }
 
@@ -80,10 +98,11 @@ void Player::keyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 }
 
 void Player::startKeyboardListener() {
-
+	/*
 	auto eventListener = EventListenerKeyboard::create();
 	eventListener->onKeyPressed = CC_CALLBACK_2(Player::keyPressed, this);
 	eventListener->onKeyReleased = CC_CALLBACK_2(Player::keyReleased, this);
 
-	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this);
+	this->getGameWorld()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this);
+	*/
 }
