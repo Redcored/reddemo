@@ -53,31 +53,31 @@ void Player::keyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
 	switch (keyCode){
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 	case EventKeyboard::KeyCode::KEY_A:
-		body->SetLinearVelocity(b2Vec2(-10, 0));
-		//body->ApplyForce(b2Vec2(-ACCELERATION ,0), body->GetWorldCenter(), true);
+		//body->SetLinearVelocity(b2Vec2(-10, 0));
+		body->ApplyForce(b2Vec2(-ACCELERATION ,0), body->GetWorldCenter(), true);
 		break;
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 	case EventKeyboard::KeyCode::KEY_D:
-		body->SetLinearVelocity(b2Vec2(10, 0));
-		//body->ApplyForce(b2Vec2(ACCELERATION ,0), body->GetWorldCenter(), true);
+		//body->SetLinearVelocity(b2Vec2(10, 0));
+		body->ApplyForce(b2Vec2(ACCELERATION ,0), body->GetWorldCenter(), true);
 		//body->ApplyForce(b2Vec2(ACCELERATION ,0), body->GetPosition(), true);
 		break;
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
 	case EventKeyboard::KeyCode::KEY_W:
-		body->SetLinearVelocity(b2Vec2(0,10));
-		//body->ApplyForce(b2Vec2(0, ACCELERATION), body->GetWorldCenter(), true);
+		//body->SetLinearVelocity(b2Vec2(0,10));
+		body->ApplyForce(b2Vec2(0, ACCELERATION), body->GetWorldCenter(), true);
 		break;
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 	case EventKeyboard::KeyCode::KEY_S:
-		body->SetLinearVelocity(b2Vec2(0,-10));
-		//body->ApplyForce(b2Vec2(0, -ACCELERATION), body->GetWorldCenter(), true);
+		//body->SetLinearVelocity(b2Vec2(0,-10));
+		body->ApplyForce(b2Vec2(0, -ACCELERATION), body->GetWorldCenter(), true);
 		break;
 	}
 }
 
 void Player::keyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 	b2Body* body = this->getPhysicsBody();
-	body->SetLinearVelocity(b2Vec2(0,0));
+	//body->SetLinearVelocity(b2Vec2(0,0));
 	switch (keyCode){
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 	case EventKeyboard::KeyCode::KEY_A:

@@ -25,7 +25,7 @@ bool GameScene::init()
 	initMenu();
 	setupPhysics();
 	
-	gameObjects.push_back(new Platform(this));
+	gameObjects.push_back(new Platform(this, Size(1000.0f, 1.0f), Vec2(0.0f, 0.0f)));
 	gameObjects.push_back(new Player(this));
 
 	this->runAction(Follow::create(gameObjects.at(1)->getGraphics()));

@@ -4,35 +4,29 @@
 
 USING_NS_CC;
 
-namespace {
-	const float WIDTH = 19.2f;
-	const float HEIGHT = 2.0f;
-};
-
-
-Platform::Platform(GameScene* scene) : GameObject(scene) {
-	setupGraphics();
-	setupPhysics();
+Platform::Platform(GameScene* scene, const cocos2d::Size& size, const cocos2d::Vec2& position) : GameObject(scene) {
+	setupGraphics(size);
+	setupPhysics(size, position);
 }
 
-void Platform::setupGraphics() {
+void Platform::setupGraphics(const cocos2d::Size& size) {
 	auto node = DrawNode::create();
-	node->drawSolidRect(Point(-WIDTH * RATIO/2, -HEIGHT*RATIO/2), Point(WIDTH * RATIO/2, HEIGHT * RATIO/2), Color4F(Color3B::WHITE));
+	node->drawSolidRect(Point(-size.width * RATIO/2, -size.height*RATIO/2), Point(size.width * RATIO/2, size.height * RATIO/2), Color4F(Color3B::WHITE));
 	this->getGameWorld()->addChild(node);
 	this->graphics = node;
 }
 
-void Platform::setupPhysics() {
+void Platform::setupPhysics(const cocos2d::Size& size, const cocos2d::Vec2& position) {
 	b2Body* body;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
-	bodyDef.position.Set(WIDTH/2, HEIGHT/2);
+	bodyDef.position.Set(position.x, position.y);
 	bodyDef.userData = this;
 	body = this->getGameWorld()->getPhysics()->CreateBody(&bodyDef);
 	
 	b2PolygonShape shape;
-	shape.SetAsBox(WIDTH/2, HEIGHT/2);
+	shape.SetAsBox(size.width/2, size.height/2);
 
 	b2FixtureDef shapeDef;
 	shapeDef.shape = &shape;
