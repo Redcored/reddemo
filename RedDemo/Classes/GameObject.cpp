@@ -1,6 +1,7 @@
 #include "GameObject.h"
+#include <Box2D/Box2D.h>
 
-GameObject::GameObject(GameScene* scene) {
+GameObject::GameObject(GameScene* scene) : RATIO(100) {
 	this->gameWorld = scene;
 }
 
@@ -18,4 +19,15 @@ GameScene* GameObject::getGameWorld() {
 
 b2Body* GameObject::getPhysicsBody() {
 	return this->physicsBody;
+}
+
+void GameObject::update() {
+	if (this->hasPhysics()) {
+		this->graphics->setPosition(this->physicsBody->GetPosition().x * RATIO, this->physicsBody->GetPosition().y * RATIO);
+		this->graphics->setRotation(this->physicsBody->GetAngle());
+	}
+}
+
+cocos2d::Node* GameObject::getGraphics() {
+	return this->graphics;
 }

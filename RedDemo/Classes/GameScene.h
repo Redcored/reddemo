@@ -4,6 +4,8 @@
 #include <Box2D/Box2D.h>
 #include "Platform.h"
 
+class GameObject;
+
 class GameScene : public cocos2d::Layer
 {
 public:
@@ -19,6 +21,7 @@ public:
 private:
 	cocos2d::Label* label;
 	b2World* physicsWorld;
+	std::vector<GameObject*> gameObjects;
 
 	void update(float deltaTime);
 	void initMenu();

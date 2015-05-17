@@ -2,6 +2,7 @@
 #include "PauseMenu.h"
 #include "Platform.h"
 #include "Player.h"
+#include "GameObject.h"
 
 USING_NS_CC;
 
@@ -24,13 +25,10 @@ bool GameScene::init()
 	initMenu();
 	setupPhysics();
 	
-	GameObject* plat = new Platform(this);
-	//plat->setPosition(1920 / 2, 100);
+	gameObjects.push_back(new Platform(this));
+	gameObjects.push_back(new Player(this));
 
-	Player* player = new Player(this);
-	//player->setPosition(1920 / 2, 400);
-
-	//this->runAction(Follow::create(player));
+	this->runAction(Follow::create(gameObjects.at(1)->getGraphics()));
 
 	this->scheduleUpdate();
 	return true;
@@ -46,7 +44,12 @@ void GameScene::update(float deltaTime) {
 	this->physicsWorld->Step(deltaTime, 8, 3);
 	for (b2Body* b = this->physicsWorld->GetBodyList();
 		b; b = b->GetNext()) {
-		log("Speed: %f", b->GetLinearVelocity());
+		//log("Speed: %f", b->GetLinearVelocity());
+		log("Y: %f, X: %f, angle: %f", b->GetPosition().y, b->GetPosition().x, b->GetAngle());
+	}
+
+	for (GameObject* o : gameObjects) {
+		o->update();
 	}
 
 }
@@ -90,5 +93,4 @@ void GameScene::pauseCallback(Ref* pSender) {
 
 void GameScene::setupPhysics() {
 	this->physicsWorld = new b2World(b2Vec2(0, -9.81));
-
 }
