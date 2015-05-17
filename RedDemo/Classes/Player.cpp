@@ -40,7 +40,7 @@ void Player::setupPhysics() {
 	b2FixtureDef shapeDef;
 	shapeDef.shape = &shape;
 	shapeDef.density = 10.0f;
-	shapeDef.friction = 0.4f;
+	shapeDef.friction = 0.8f;
 	shapeDef.restitution = 0.8f;
 
 	body->CreateFixture(&shapeDef);

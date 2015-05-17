@@ -38,7 +38,7 @@ void Platform::setupPhysics() {
 	shapeDef.shape = &shape;
 	shapeDef.density = 10.0f;
 	shapeDef.friction = 0.4f;
-	shapeDef.restitution = 0.1f;
+	shapeDef.restitution = 0.0f;
 
 	body->CreateFixture(&shapeDef);
 	this->setPhysicsBody(body);

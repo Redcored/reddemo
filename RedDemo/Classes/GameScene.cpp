@@ -45,7 +45,7 @@ void GameScene::update(float deltaTime) {
 	for (b2Body* b = this->physicsWorld->GetBodyList();
 		b; b = b->GetNext()) {
 		//log("Speed: %f", b->GetLinearVelocity());
-		log("Y: %f, X: %f, angle: %f", b->GetPosition().y, b->GetPosition().x, b->GetAngle());
+		log("Y: %f, X: %f, angle: %f, angular velocity: %f", b->GetPosition().y, b->GetPosition().x, -b->GetAngle()/3.14*180, b->GetAngularVelocity());
 	}
 
 	for (GameObject* o : gameObjects) {

@@ -24,7 +24,7 @@ b2Body* GameObject::getPhysicsBody() {
 void GameObject::update() {
 	if (this->hasPhysics()) {
 		this->graphics->setPosition(this->physicsBody->GetPosition().x * RATIO, this->physicsBody->GetPosition().y * RATIO);
-		this->graphics->setRotation(this->physicsBody->GetAngle());
+		this->graphics->setRotation(-this->physicsBody->GetAngle()/3.14f*180);
 	}
 }
 
