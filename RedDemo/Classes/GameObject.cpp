@@ -1,8 +1,16 @@
 #include "GameObject.h"
+#include "cocos2d.h"
 #include <Box2D/Box2D.h>
 
-GameObject::GameObject(GameScene* scene) : RATIO(100) {
+USING_NS_CC;
+
+GameObject::GameObject(GameScene* scene) : RATIO(60) {
 	this->gameWorld = scene;
+}
+
+void GameObject::updatePhysics(float physicsTickLength) {
+	this->oldPosition = this->newPosition;
+	this->newPosition = Vec2(this->getPhysicsBody()->GetPosition().x, this->getPhysicsBody()->GetPosition().y);
 }
 
 bool GameObject::hasPhysics() const {
@@ -21,9 +29,10 @@ b2Body* GameObject::getPhysicsBody() {
 	return this->physicsBody;
 }
 
-void GameObject::update() {
+void GameObject::updateGraphics(float interpolation) {
 	if (this->hasPhysics()) {
-		this->graphics->setPosition(this->physicsBody->GetPosition().x * RATIO, this->physicsBody->GetPosition().y * RATIO);
+		Vec2 interpolated = (oldPosition * (1.0f - interpolation) + newPosition * (interpolation)) * RATIO;
+		this->graphics->setPosition(interpolated);
 		this->graphics->setRotation(-this->physicsBody->GetAngle()/3.14f*180);
 	}
 }

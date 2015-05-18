@@ -7,6 +7,9 @@ USING_NS_CC;
 Platform::Platform(GameScene* scene, const cocos2d::Size& size, const cocos2d::Vec2& position) : GameObject(scene) {
 	setupGraphics(size);
 	setupPhysics(size, position);
+	this->newPosition = position;
+	this->oldPosition = position;
+	updateGraphics(0);
 }
 
 void Platform::setupGraphics(const cocos2d::Size& size) {

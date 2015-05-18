@@ -14,6 +14,9 @@ namespace {
 Player::Player(GameScene* scene) : GameObject(scene) {
 	setupGraphics();
 	setupPhysics();
+	this->oldPosition = Vec2(this->getPhysicsBody()->GetPosition().x, this->getPhysicsBody()->GetPosition().y);
+	this->newPosition = this->oldPosition;
+
 	startKeyboardListener();
 }
 

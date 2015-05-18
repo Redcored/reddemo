@@ -9,7 +9,8 @@ USING_NS_CC;
 Scene* GameScene::createScene()
 {
 	// Setting up the scene
-	auto scene = Scene::createWithPhysics();
+	auto scene = Scene::create();
+	//auto scene = Scene::createWithPhysics();
 
 	auto layer = GameScene::create();
 	scene->addChild(layer);
@@ -24,11 +25,13 @@ bool GameScene::init()
 
 	initMenu();
 	setupPhysics();
-	
-	gameObjects.push_back(new Platform(this, Size(1000.0f, 1.0f), Vec2(0.0f, 0.0f)));
-	gameObjects.push_back(new Player(this));
 
-	this->runAction(Follow::create(gameObjects.at(1)->getGraphics()));
+	gameObjects.push_back(new Player(this));
+	for (int i = 0; i < 5000; i++) {
+		gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)11.0f * i, 0.0f)));
+	}
+
+	//this->runAction(Follow::create(gameObjects.at(0)->getGraphics()));
 
 	this->scheduleUpdate();
 	return true;
@@ -40,17 +43,31 @@ b2World* GameScene::getPhysics() {
 
 void GameScene::update(float deltaTime) {
 
-	// Currently, there is nothing to do
-	this->physicsWorld->Step(deltaTime, 8, 3);
+	this->accumulator += deltaTime;
+
+	float physicsTick = 0.03;
+	while (this->accumulator >= physicsTick) {
+
+		this->physicsWorld->Step(physicsTick, 8, 3);
+		for (GameObject* o : gameObjects) {
+			o->updatePhysics(physicsTick);
+		}
+
+		this->accumulator -= physicsTick;
+	}
+
+	gameObjects.at(0)->updateGraphics(this->accumulator);
+	//gameObjects.at(0)->update(this->accumulator/physicsTick);
+
+	/*
 	for (b2Body* b = this->physicsWorld->GetBodyList();
 		b; b = b->GetNext()) {
-		//log("Speed: %f", b->GetLinearVelocity());
-		log("Y: %f, X: %f, angle: %f, angular velocity: %f", b->GetPosition().y, b->GetPosition().x, -b->GetAngle()/3.14*180, b->GetAngularVelocity());
 	}
 
 	for (GameObject* o : gameObjects) {
 		o->update();
 	}
+	*/
 
 }
 

@@ -27,5 +27,7 @@ private:
 	void initMenu();
 	void pauseCallback(Ref* pSender);
 	void setupPhysics();
+
+	float accumulator = 0;
 };
 
