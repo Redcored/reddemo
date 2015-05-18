@@ -23,6 +23,8 @@ bool GameScene::init()
 	// Super init handling
 	if (!Layer::init()) { return false; }
 
+	accumulator = 0;
+
 	initMenu();
 	setupPhysics();
 
@@ -31,7 +33,7 @@ bool GameScene::init()
 		gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)11.0f * i, 0.0f)));
 	}
 
-	//this->runAction(Follow::create(gameObjects.at(0)->getGraphics()));
+	this->runAction(Follow::create(gameObjects.at(0)->getGraphics()));
 
 	this->scheduleUpdate();
 	return true;
