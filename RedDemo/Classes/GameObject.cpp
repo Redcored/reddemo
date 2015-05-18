@@ -4,7 +4,7 @@
 
 USING_NS_CC;
 
-GameObject::GameObject(GameScene* scene) : RATIO(60) {
+GameObject::GameObject(GameScene* scene) : RATIO(100) {
 	this->gameWorld = scene;
 }
 

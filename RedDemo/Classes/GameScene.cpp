@@ -29,8 +29,20 @@ bool GameScene::init()
 	setupPhysics();
 
 	gameObjects.push_back(new Player(this));
-	for (int i = 0; i < 5000; i++) {
-		gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)11.0f * i, 0.0f)));
+	for (int i = 0; i < 500; i++) {
+		float rand = random(0, 10);
+		if (rand < 1) {}
+		else if (rand < 6) {
+			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 10.8)));
+			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 0)));
+		}
+		else if (rand < 8) {
+			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 10.8)));
+		}
+		else {
+			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 0)));
+		}
+
 	}
 
 	this->runAction(Follow::create(gameObjects.at(0)->getGraphics()));
@@ -59,6 +71,16 @@ void GameScene::update(float deltaTime) {
 	}
 
 	gameObjects.at(0)->updateGraphics(this->accumulator);
+
+	float zoom = 1;
+	this->setPosition(- (gameObjects.at(0)->getGraphics()->getPosition().x - 500)*zoom, this->getPosition().y);
+	this->setScale(zoom);
+	//gameObjects.at(0)->getGraphics()->setPosition(0, 0);
+	/*
+	for (GameObject* o : gameObjects) {
+		o->getGraphics()->setPosition(o->getGraphics()->getPosition() - gameObjects.at(0)->getGraphics()->getPosition() + Vec2(500, 500));
+	}
+	*/
 	//gameObjects.at(0)->update(this->accumulator/physicsTick);
 
 	/*
