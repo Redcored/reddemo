@@ -4,11 +4,11 @@
 
 USING_NS_CC;
 
-GameObject::GameObject(GameScene* scene) : RATIO(100) {
-	this->gameWorld = scene;
-}
+GameObject::GameObject(GameWorld& world) : 
+	gameWorld(world),
+	RATIO(100) {}
 
-void GameObject::updatePhysics(float physicsTickLength) {
+void GameObject::physicsTick(float physicsTickLength) {
 	this->oldPosition = this->newPosition;
 	this->newPosition = Vec2(this->getPhysicsBody()->GetPosition().x, this->getPhysicsBody()->GetPosition().y);
 }
@@ -21,7 +21,7 @@ void GameObject::setPhysicsBody(b2Body* body) {
 	this->physicsBody = body;
 }
 
-GameScene* GameObject::getGameWorld() {
+GameWorld& GameObject::getGameWorld() {
 	return this->gameWorld;
 }
 

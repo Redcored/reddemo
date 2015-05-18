@@ -5,7 +5,7 @@
 class Player : public GameObject
 {
 public:
-	Player(GameScene* scene);
+	Player(GameWorld& world);
 
 private:
 	void setupGraphics();

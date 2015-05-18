@@ -1,10 +1,13 @@
 #include "Platform.h"
-#include "GameScene.h"
+
 #include <Box2D\Box2D.h>
+#include "GameWorld.h"
 
 USING_NS_CC;
 
-Platform::Platform(GameScene* scene, const cocos2d::Size& size, const cocos2d::Vec2& position) : GameObject(scene) {
+Platform::Platform(GameWorld& world, const cocos2d::Size& size, const cocos2d::Vec2& position) :
+	GameObject(world)
+{
 	setupGraphics(size);
 	setupPhysics(size, position);
 	this->newPosition = position;
@@ -15,7 +18,6 @@ Platform::Platform(GameScene* scene, const cocos2d::Size& size, const cocos2d::V
 void Platform::setupGraphics(const cocos2d::Size& size) {
 	auto node = DrawNode::create();
 	node->drawSolidRect(Point(-size.width * RATIO/2, -size.height*RATIO/2), Point(size.width * RATIO/2, size.height * RATIO/2), Color4F(Color3B::WHITE));
-	this->getGameWorld()->addChild(node);
 	this->graphics = node;
 }
 
@@ -26,7 +28,7 @@ void Platform::setupPhysics(const cocos2d::Size& size, const cocos2d::Vec2& posi
 	bodyDef.type = b2_staticBody;
 	bodyDef.position.Set(position.x, position.y);
 	bodyDef.userData = this;
-	body = this->getGameWorld()->getPhysics()->CreateBody(&bodyDef);
+	body = this->getGameWorld().getPhysics()->CreateBody(&bodyDef);
 	
 	b2PolygonShape shape;
 	shape.SetAsBox(size.width/2, size.height/2);

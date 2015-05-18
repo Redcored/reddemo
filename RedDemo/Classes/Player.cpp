@@ -1,6 +1,7 @@
 #include "Player.h"
-#include "GameScene.h"
+
 #include <Box2D\Box2D.h>
+#include "GameWorld.h"
 
 USING_NS_CC;
 
@@ -11,9 +12,10 @@ namespace {
 	const unsigned int BALL_SEGMENTS = 64;
 };
 
-Player::Player(GameScene* scene) : GameObject(scene) {
+Player::Player(GameWorld& world) : GameObject(world) {
 	setupGraphics();
 	setupPhysics();
+
 	this->oldPosition = Vec2(this->getPhysicsBody()->GetPosition().x, this->getPhysicsBody()->GetPosition().y);
 	this->newPosition = this->oldPosition;
 
@@ -23,7 +25,6 @@ Player::Player(GameScene* scene) : GameObject(scene) {
 void Player::setupGraphics() {
 	DrawNode* graphics = DrawNode::create();
 	graphics->drawCircle(Vec2::ZERO, BALL_RADIUS * RATIO, BALL_ANGLE, BALL_SEGMENTS, true, Color4F(Color3B::ORANGE));
-	this->getGameWorld()->addChild(graphics);
 	this->graphics = graphics;
 }
 
@@ -34,7 +35,7 @@ void Player::setupPhysics() {
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(8.6f, 8.0f);
 	bodyDef.userData = this;
-	body = this->getGameWorld()->getPhysics()->CreateBody(&bodyDef);
+	body = this->getGameWorld().getPhysics()->CreateBody(&bodyDef);
 
 	b2CircleShape shape;
 	shape.m_radius = BALL_RADIUS;
@@ -107,6 +108,6 @@ void Player::startKeyboardListener() {
 	eventListener->onKeyPressed = CC_CALLBACK_2(Player::keyPressed, this);
 	eventListener->onKeyReleased = CC_CALLBACK_2(Player::keyReleased, this);
 
-	this->getGameWorld()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this->graphics);
+	//this->getGameWorld()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this->graphics);
 	
 }

@@ -14,6 +14,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
                    ../../Classes/GameObject.cpp \
                    ../../Classes/GameScene.cpp \
+                   ../../Classes/GameWorld.cpp \
                    ../../Classes/MenuScene.cpp \
                    ../../Classes/PauseMenu.cpp \
                    ../../Classes/Platform.cpp \

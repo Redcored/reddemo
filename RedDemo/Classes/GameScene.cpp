@@ -1,8 +1,6 @@
 #include "GameScene.h"
 #include "PauseMenu.h"
-#include "Platform.h"
-#include "Player.h"
-#include "GameObject.h"
+#include "GameWorld.h"
 
 USING_NS_CC;
 
@@ -23,76 +21,16 @@ bool GameScene::init()
 	// Super init handling
 	if (!Layer::init()) { return false; }
 
-	accumulator = 0;
-
 	initMenu();
-	setupPhysics();
 
-	gameObjects.push_back(new Player(this));
-	for (int i = 0; i < 500; i++) {
-		float rand = random(0, 10);
-		if (rand < 1) {}
-		else if (rand < 6) {
-			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 10.8)));
-			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 0)));
-		}
-		else if (rand < 8) {
-			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 10.8)));
-		}
-		else {
-			gameObjects.push_back(new Platform(this, Size(10.0f, 1.0f), Vec2((float)10.0f * i, 0)));
-		}
-
-	}
-
-	this->runAction(Follow::create(gameObjects.at(0)->getGraphics()));
-
+	gameWorld = new GameWorld(*this);
+	
 	this->scheduleUpdate();
 	return true;
 }
 
-b2World* GameScene::getPhysics() {
-	return this->physicsWorld;
-}
-
 void GameScene::update(float deltaTime) {
-
-	this->accumulator += deltaTime;
-
-	float physicsTick = 0.03;
-	while (this->accumulator >= physicsTick) {
-
-		this->physicsWorld->Step(physicsTick, 8, 3);
-		for (GameObject* o : gameObjects) {
-			o->updatePhysics(physicsTick);
-		}
-
-		this->accumulator -= physicsTick;
-	}
-
-	gameObjects.at(0)->updateGraphics(this->accumulator);
-
-	float zoom = 1;
-	this->setPosition(- (gameObjects.at(0)->getGraphics()->getPosition().x - 500)*zoom, this->getPosition().y);
-	this->setScale(zoom);
-	//gameObjects.at(0)->getGraphics()->setPosition(0, 0);
-	/*
-	for (GameObject* o : gameObjects) {
-		o->getGraphics()->setPosition(o->getGraphics()->getPosition() - gameObjects.at(0)->getGraphics()->getPosition() + Vec2(500, 500));
-	}
-	*/
-	//gameObjects.at(0)->update(this->accumulator/physicsTick);
-
-	/*
-	for (b2Body* b = this->physicsWorld->GetBodyList();
-		b; b = b->GetNext()) {
-	}
-
-	for (GameObject* o : gameObjects) {
-		o->update();
-	}
-	*/
-
+	gameWorld->update(deltaTime);
 }
 
 void GameScene::initMenu() {
@@ -130,8 +68,4 @@ void GameScene::initMenu() {
 void GameScene::pauseCallback(Ref* pSender) {
 	auto scene = PauseMenu::createScene();
 	Director::getInstance()->pushScene(TransitionFade::create(0.25, scene));
-}
-
-void GameScene::setupPhysics() {
-	this->physicsWorld = new b2World(b2Vec2(0, -9.81));
 }

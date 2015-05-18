@@ -3,23 +3,22 @@
 #include "cocos2d.h"
 
 class b2Body;
-class GameScene;
+class GameWorld;
 
 class GameObject {
 
 public:
-	GameObject(GameScene* scene);
+	GameObject(GameWorld& world);
 
 	bool hasPhysics() const;
 	void setPhysicsBody(b2Body* body);
 
 	// Update Graphics Coordinates to Correspond the ones in physicsBody
 	void updateGraphics(float interpolation);
-	void updatePhysics(float physicsTickLength);
+	void physicsTick(float physicsTickLength);
 
+	GameWorld& getGameWorld();
 	cocos2d::Node* getGraphics();
-	
-	GameScene* getGameWorld();
 	b2Body* getPhysicsBody();
 
 protected:
@@ -30,6 +29,6 @@ protected:
 	// PhysicsMeters to Pixels ratio
 	const float RATIO;
 private:
-	GameScene* gameWorld;
+	GameWorld& gameWorld;
 	b2Body* physicsBody;
 };
