@@ -2,6 +2,7 @@
 
 #include <Box2D\Box2D.h>
 #include "GameWorld.h"
+#include "Platform.h"
 
 USING_NS_CC;
 
@@ -9,7 +10,7 @@ namespace {
 	const float BALL_RADIUS = 1.0f;
 	const float BALL_ANGLE = 0.0f;
 	const float HORIZONTAL_ACCELERATION = 16000;
-	const float VERTICAL_ACCELERATION = 12000;
+	const float VERTICAL_ACCELERATION = 30000;
 	const unsigned int BALL_SEGMENTS = 64;
 };
 
@@ -106,4 +107,12 @@ void Player::startKeyboardListener() {
 	eventListener->onKeyPressed = CC_CALLBACK_2(Player::keyPressed, this);
 	eventListener->onKeyReleased = CC_CALLBACK_2(Player::keyReleased, this);
 	this->getGraphics()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this->graphics);
+}
+
+void Player::acceptCollision(GameObject* gameObject) {
+	gameObject->collide(*this);
+}
+
+void Player::collide(Platform& platform) {
+	log("Player collided to platform!");
 }

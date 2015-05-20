@@ -6,7 +6,8 @@ class Player : public GameObject
 {
 public:
 	Player(GameWorld& world);
-
+	virtual void acceptCollision(GameObject* gameObject) override;
+	virtual void collide(Platform& platform) override;
 private:
 	void setupGraphics();
 	void setupPhysics();

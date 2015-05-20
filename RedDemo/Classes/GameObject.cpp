@@ -40,3 +40,10 @@ void GameObject::updateGraphics(float interpolation) {
 cocos2d::Node* GameObject::getGraphics() {
 	return this->graphics;
 }
+
+void GameObject::acceptCollision(GameObject* gameObject) {
+}
+void GameObject::collide(Platform& platform) {
+}
+void GameObject::collide(Player& player) {
+}

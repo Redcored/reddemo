@@ -42,3 +42,7 @@ void Platform::setupPhysics(const cocos2d::Size& size, const cocos2d::Vec2& posi
 	body->CreateFixture(&shapeDef);
 	this->setPhysicsBody(body);
 }
+
+void Platform::acceptCollision(GameObject* gameObject) {
+	gameObject->collide(*this);
+}

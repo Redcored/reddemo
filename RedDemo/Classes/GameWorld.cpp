@@ -14,7 +14,7 @@ GameWorld::GameWorld(cocos2d::Node& graphicsNode) :
 	updateTimeAccumulator(0),
 	physicsTickDuration(0.02)
 {
-	
+	physics->SetContactListener(this);
 	gameObjects.push_back(new Player(*this));
 	gameObjects.push_back(new Platform(*this, Size(10.0f, 1.0f), Vec2((float)5.0f, 0)));
 	for (int i = 0; i < 1000; i++) {
@@ -66,4 +66,12 @@ void GameWorld::update(float deltaTime) {
 
 b2World* GameWorld::getPhysics() {
 	return this->physics;
+}
+
+void GameWorld::BeginContact(b2Contact* contact) {
+	log("Collision between contacts.");
+	GameObject* o = static_cast<GameObject*>(contact->GetFixtureA()->GetBody()->GetUserData());
+	GameObject* o2 = static_cast<GameObject*>(contact->GetFixtureB()->GetBody()->GetUserData());
+	o->acceptCollision(o2);
+	o2->acceptCollision(o);
 }

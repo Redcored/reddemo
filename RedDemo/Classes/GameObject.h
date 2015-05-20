@@ -4,6 +4,8 @@
 
 class b2Body;
 class GameWorld;
+class Platform;
+class Player;
 
 class GameObject {
 
@@ -16,6 +18,13 @@ public:
 	// Update Graphics Coordinates to Correspond the ones in physicsBody
 	void updateGraphics(float interpolation);
 	virtual void physicsTick(float physicsTickLength);
+
+	// Accept collision function that each GameObject has to implement
+	virtual void acceptCollision(GameObject* gameObject) = 0;
+
+	// Collide functions that GameObjects can inherit if they wish to do so
+	virtual void collide(Platform& platform);
+	virtual void collide(Player& player);
 
 	GameWorld& getGameWorld();
 	cocos2d::Node* getGraphics();
