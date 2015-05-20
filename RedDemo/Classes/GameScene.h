@@ -7,6 +7,7 @@ class GameWorld;
 class GameScene : public cocos2d::Layer
 {
 public:
+	~GameScene();
 
 	// Cocos 2D's management functions.
 	static cocos2d::Scene* createScene();

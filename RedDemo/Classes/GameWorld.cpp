@@ -38,6 +38,16 @@ GameWorld::GameWorld(cocos2d::Node& graphicsNode) :
 	}
 }
 
+GameWorld::~GameWorld() {
+	while(!gameObjects.empty()) {
+        delete gameObjects.back();
+        gameObjects.pop_back();
+    }
+
+	delete physics;
+	physics = nullptr;
+}
+
 void GameWorld::update(float deltaTime) {
 	this->updateTimeAccumulator += deltaTime;
 

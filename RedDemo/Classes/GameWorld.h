@@ -11,6 +11,7 @@ class GameWorld : b2ContactListener {
 
 public:
 	GameWorld(cocos2d::Node& graphicsNode);
+	~GameWorld();
 
 	void update(float deltaTime);
 	b2World* getPhysics();

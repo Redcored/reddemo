@@ -4,6 +4,11 @@
 
 USING_NS_CC;
 
+GameScene::~GameScene() {
+	delete gameWorld;
+	gameWorld = nullptr;
+}
+
 Scene* GameScene::createScene()
 {
 	// Setting up the scene
