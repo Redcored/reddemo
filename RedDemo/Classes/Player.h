@@ -10,8 +10,10 @@ public:
 private:
 	void setupGraphics();
 	void setupPhysics();
-
+	void physicsTick(float physicsTickLength) override;
 	void startKeyboardListener();
 	void keyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void keyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+
+	cocos2d::Vec2 forceVector;
 };

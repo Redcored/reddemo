@@ -15,7 +15,7 @@ public:
 
 	// Update Graphics Coordinates to Correspond the ones in physicsBody
 	void updateGraphics(float interpolation);
-	void physicsTick(float physicsTickLength);
+	virtual void physicsTick(float physicsTickLength);
 
 	GameWorld& getGameWorld();
 	cocos2d::Node* getGraphics();

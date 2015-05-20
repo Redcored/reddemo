@@ -8,11 +8,12 @@ USING_NS_CC;
 namespace {
 	const float BALL_RADIUS = 1.0f;
 	const float BALL_ANGLE = 0.0f;
-	const float ACCELERATION = 5000;
+	const float HORIZONTAL_ACCELERATION = 16000;
+	const float VERTICAL_ACCELERATION = 12000;
 	const unsigned int BALL_SEGMENTS = 64;
 };
 
-Player::Player(GameWorld& world) : GameObject(world) {
+Player::Player(GameWorld& world) : GameObject(world), forceVector(0,0) {
 	setupGraphics();
 	setupPhysics();
 
@@ -20,6 +21,12 @@ Player::Player(GameWorld& world) : GameObject(world) {
 	this->newPosition = this->oldPosition;
 
 	startKeyboardListener();
+}
+
+void Player::physicsTick(float physicsTickLength) {
+	auto body = this->getPhysicsBody();
+	body->ApplyForce(b2Vec2(forceVector.x*physicsTickLength,forceVector.y*physicsTickLength), body->GetWorldCenter(), true);
+	GameObject::physicsTick(physicsTickLength);
 }
 
 void Player::setupGraphics() {
@@ -52,52 +59,43 @@ void Player::setupPhysics() {
 }
 
 void Player::keyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
-	b2Body* body = this->getPhysicsBody();
-
 	switch (keyCode){
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 	case EventKeyboard::KeyCode::KEY_A:
-		//body->SetLinearVelocity(b2Vec2(-10, 0));
-		body->ApplyForce(b2Vec2(-ACCELERATION ,0), body->GetWorldCenter(), true);
+		forceVector.add(Vec2(-HORIZONTAL_ACCELERATION, 0));
 		break;
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 	case EventKeyboard::KeyCode::KEY_D:
-		//body->SetLinearVelocity(b2Vec2(10, 0));
-		body->ApplyForce(b2Vec2(ACCELERATION ,0), body->GetWorldCenter(), true);
-		//body->ApplyForce(b2Vec2(ACCELERATION ,0), body->GetPosition(), true);
+		forceVector.add(Vec2(HORIZONTAL_ACCELERATION, 0));
 		break;
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
 	case EventKeyboard::KeyCode::KEY_W:
-		//body->SetLinearVelocity(b2Vec2(0,10));
-		body->ApplyForce(b2Vec2(0, ACCELERATION), body->GetWorldCenter(), true);
+		forceVector.add(Vec2(0, VERTICAL_ACCELERATION));
 		break;
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 	case EventKeyboard::KeyCode::KEY_S:
-		//body->SetLinearVelocity(b2Vec2(0,-10));
-		body->ApplyForce(b2Vec2(0, -ACCELERATION), body->GetWorldCenter(), true);
+		forceVector.add(Vec2(0, -VERTICAL_ACCELERATION));
 		break;
 	}
 }
 
 void Player::keyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
-	b2Body* body = this->getPhysicsBody();
-	//body->SetLinearVelocity(b2Vec2(0,0));
 	switch (keyCode){
 	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 	case EventKeyboard::KeyCode::KEY_A:
-		//body->ApplyForce(b2Vec2(ACCELERATION ,0), body->GetWorldCenter(), true);
+		forceVector.add(Vec2(HORIZONTAL_ACCELERATION, 0));
 		break;
 	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 	case EventKeyboard::KeyCode::KEY_D:
-		//body->ApplyForce(b2Vec2(-ACCELERATION ,0), body->GetWorldCenter(), true);
+		forceVector.add(Vec2(-HORIZONTAL_ACCELERATION, 0));
 		break;
 	case EventKeyboard::KeyCode::KEY_UP_ARROW:
 	case EventKeyboard::KeyCode::KEY_W:
-		//body->ApplyForce(b2Vec2(0, -ACCELERATION), body->GetWorldCenter(), true);
+		forceVector.add(Vec2(0, -VERTICAL_ACCELERATION));
 		break;
 	case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 	case EventKeyboard::KeyCode::KEY_S:
-		//body->ApplyForce(b2Vec2(0, ACCELERATION), body->GetWorldCenter(), true);
+		forceVector.add(Vec2(0, VERTICAL_ACCELERATION));
 		break;
 	}
 }
@@ -107,7 +105,5 @@ void Player::startKeyboardListener() {
 	auto eventListener = EventListenerKeyboard::create();
 	eventListener->onKeyPressed = CC_CALLBACK_2(Player::keyPressed, this);
 	eventListener->onKeyReleased = CC_CALLBACK_2(Player::keyReleased, this);
-
-	//this->getGameWorld()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this->graphics);
-	
+	this->getGraphics()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this->graphics);
 }
